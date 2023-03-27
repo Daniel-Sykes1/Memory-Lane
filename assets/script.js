@@ -6,6 +6,8 @@ var answerContainer = document.getElementById("answers_container");
 var winsSpan = document.getElementById("Win-span");
 var LossSpan = document.getElementById("loss-span");
 
+
+
 mainContainerEl.style.display = "none";
 
 var seconds = 10;
@@ -13,24 +15,63 @@ var wins = 0;
 var losses = 0;
 var Questionaire = [
     {
-        "text": "what does HTML stand for ?", 
-        options: ["Handmade Toggle Meta Link", "Hypertext Markup Language" , "Hyperlink Markdown Lingo" , "Hydroclick Many Logos"],
-        correct: "Hypertext Markup Language"
+        text: "What does HTML stand for ?", 
+        alternative: ["Handmade Toggle Meta Link", "Hypertext Markup Language" , "Hyperlink Markdown Lingo" , "Hydroclick Many Logos"],
+        correct: 1
     }, {
         text: "What is Javascript?",
-        options: ["and interface for dynamic interactions", "an interface for animations", "and applications for games specifically", "a platform to create gifs"],
-        correct: "me"
+        alternative: ["an interface for dynamic interactions", "an interface for animations", "and applications for games specifically", "a platform to create gifs"],
+        correct: 0
     }, {
         text: "What is a loop?",
-        options: [ "A method used to circulate information", "A method used to cycle through selected information", "Something you used to do as a kid", "A cowboys knot"],
-        correct: "A method used to cycle through selected information"
+        alternative: [ "A method used to circulate information", "A method used to cycle through selected information", "Something you used to do as a kid", "A cowboys knot"],
+        correct: 1
     }
 ]
 
+startBtn.addEventListener("click", function() {
+    console.log("clicked");
+    mainContainerEl.style.display = "block";
+    //showQuestion()
+    timer();
+  });
 
-function startUp() {
-    WinTally();
+// adds to loss collumn and disables start button
+function loss() {
+    losses++;
+    localStorage.setItem('losses', losses);
+    startBtn.disabled = false;
     LossTally();
+}
+
+// Timer built to stop at zero and call loss function if it reaches zero
+function timer() {
+    var setUp = setInterval(function() {
+      timerEl.innerHTML = seconds;
+      seconds--;
+      if (seconds <= -1) {
+        clearInterval(setUp);
+        loss();
+      }
+    }, 1000);
+  }
+
+
+
+
+
+function LossTally() {
+    var countLoss =localStorage.getItem("wins");
+    if (countLoss){
+        lossSpan.textContent = countLoss
+    };
+}
+// adds win to win collumn and disables start button 
+function winner() {
+    wins++;
+    localStorage.setItem('wins', wins);
+    startBtn.disabled = false;
+    WinTally()
 }
 
 function WinTally() {
@@ -40,51 +81,10 @@ function WinTally() {
     };
 }
 
-function LossTally() {
-    var countLoss =localStorage.getItem("wins");
-    if (countLoss){
-        lossSpan.textContent = countLoss
-    };
-}
-
-function loss() {
-    losses++;
-    localStorage.setItem('losses', losses);
-    startBtn.disabled = false;
-    LossTally();
-}
-function winner() {
-    wins++;
-    localStorage.setItem('wins', wins);
-    startBtn.disabled = false;
-    WinTally()
-}
+//function showQuestion() {
+   // question.innerHTML = Questionaire[0].text}
 
 
-function timer() {
-  var setUp = setInterval(function() {
-    timerEl.innerHTML = seconds;
-    seconds--;
-    if (seconds <= -1) {
-      clearInterval(setUp);
-      loss();
-    }
-  }, 1000);
-}
-function showQuestion() {
-    question.innerHTML = Questionaire[0].text
-    for(var i = 0; i < Questionaire.length; i++) {
-        const element = Questionaire[i];
-    }
-    }
+   
 
-    startBtn.addEventListener("click", function() {
-        console.log("clicked");
-        mainContainerEl.style.display = "block";
-        showQuestion()
-        timer();
-        startUp();
-        return;
-      });
-startUp();
 // showing options. Use method for each.. (allows you to use increased amounts of buttons as options without error)

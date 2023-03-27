@@ -1,0 +1,10 @@
+Body {
+    background-color: blue;
+    padding: 25%;
+    margin: 50px, 100px;
+    border: 10px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+   
+}
